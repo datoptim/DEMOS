@@ -32,13 +32,14 @@ GO
 	What happens when you try to run all this next block of code?
 	Take a look that the fourth INSERT doesn't respect integrity.
 */
-INSERT INTO City VALUES ('Z1', 'Bolivia')
-INSERT INTO City VALUES ('Z2', 'Bolivia')
-INSERT INTO City VALUES ('Z3', 'Bolivia')
-INSERT INTO City VALUES ('Z4', 'Boliviazz')
-INSERT INTO City VALUES ('Z5', 'Bolivia')
-INSERT INTO City VALUES ('Z6', 'Bolivia')
-
+BEGIN TRAN
+	INSERT INTO City VALUES ('Z1', 'Bolivia')
+	INSERT INTO City VALUES ('Z2', 'Bolivia')
+	INSERT INTO City VALUES ('Z3', 'Bolivia')
+	INSERT INTO City VALUES ('Z4', 'Boliviazz')
+	INSERT INTO City VALUES ('Z5', 'Bolivia')
+	INSERT INTO City VALUES ('Z6', 'Bolivia')
+COMMIT
 
 
 
@@ -67,4 +68,26 @@ GO
 		DELETE FROM City 
 		WHERE City in ('Datoptim', 'Z1', 'Z2', 'Z3', 'Z5', 'Z6')
 		GO
+
+		Now try the same exercise this time setting XACT_ABORT.
+		Run the following as a block
 */
+
+SET XACT_ABORT ON
+BEGIN TRAN
+	INSERT INTO City VALUES ('Z1', 'Bolivia')
+	INSERT INTO City VALUES ('Z2', 'Bolivia')
+	INSERT INTO City VALUES ('Z3', 'Bolivia')
+	INSERT INTO City VALUES ('Z4', 'Boliviazz')
+	INSERT INTO City VALUES ('Z5', 'Bolivia')
+	INSERT INTO City VALUES ('Z6', 'Bolivia')
+COMMIT
+
+
+
+
+/*	You can see the same error message as before.
+	Let's check the content of the table
+*/
+EXEC usp_ListCities 'Bolivia'
+GO
