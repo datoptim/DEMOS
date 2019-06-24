@@ -46,7 +46,7 @@ GO
 
 
 
---	Let's open two new window session
+--	Let's open two new window sessions
 --	to simulate different connections
 --	copy the following but don't execute yet.
 --	You will execute the steps as detailed
