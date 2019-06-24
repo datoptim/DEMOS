@@ -6,6 +6,7 @@
 
 	We'll simulate a deadlock event.
 	You can visit www.datoptim.com
+	(ES) www.datoptim.com/simular-deadlock
 */
 
 
@@ -40,3 +41,69 @@ INSERT INTO BF_Scarlett(Product, Quantity) VALUES
 	('Marmalade', 0),
 	('Fruit', 8)
 GO
+
+
+
+
+
+--	Let's open two new window session
+--	to simulate different connections
+--	copy the following but don't execute yet.
+--	You will execute the steps as detailed
+
+--------------------
+--	<Session A>
+--------------------
+
+--	Step 1: Start here
+BEGIN TRAN
+
+UPDATE BF_Pablo
+SET Quantity = Quantity +1
+WHERE Product = 'Bread'
+
+--	Go to Session B
+
+
+--	Step 3: After Step 2
+UPDATE BF_Scarlett
+SET Quantity = Quantity +1
+WHERE Product = 'Bread'
+
+
+--	Go to Session B again
+
+--	ROLLBACK
+
+--------------------
+--	</Session A>
+--------------------
+
+
+
+--------------------
+--	<Session B>
+--------------------
+
+--	Step 2: Start here
+BEGIN TRAN
+
+UPDATE BF_Scarlett
+SET Quantity = Quantity +1
+WHERE Product = 'Marmalade'
+
+--	Go back to Session A
+
+
+--	Step 4: After Step 3
+UPDATE BF_Pablo
+SET Quantity = Quantity +1
+WHERE Product = 'Marmalade'
+
+
+
+--	ROLLBACK
+
+--------------------
+--	</Session B>
+--------------------
